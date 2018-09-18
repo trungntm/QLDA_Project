@@ -42,4 +42,7 @@ public class Person {
 
     @OneToMany(mappedBy = "person")
     private Set<Invoice> invoices;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    private User user;
 }
