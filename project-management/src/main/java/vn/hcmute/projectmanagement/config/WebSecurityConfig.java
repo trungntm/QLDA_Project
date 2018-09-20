@@ -33,31 +33,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     // verify user with roles each user has
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-//        http
-//                .csrf().disable()
-//                .authorizeRequests()
-//                .antMatchers("/", "/home", "/about").permitAll()
-//                .antMatchers("/admin/**").hasRole("ADMIN")
-//                .antMatchers("/user/**").hasRole("USER")
-//                .anyRequest().authenticated()
-//                .and()
-//                .formLogin()
-//                .loginPage("/login")
-////                .successForwardUrl() 2 cai nay khac gi nhau ta
-//                .defaultSuccessUrl("/",true)
-//                .permitAll()
-//                .and()
-//                .logout()
-//                .permitAll()
-//                .and()
-//                .exceptionHandling();
-
         http.csrf().disable()
                 .authorizeRequests()
                 // No need authentication.
                 .antMatchers("/","/home").permitAll() //
-                .antMatchers("/admin/**","/admin").hasAnyAuthority("{ROLE_ADMIN}")
-                .antMatchers("/user/**","/user").hasAnyAuthority("{ROLE_USER}","{ROLE_ADMIN}")
+                .antMatchers("/api/v1/users/admin/**","/admin").hasAnyAuthority("{ROLE_ADMIN}")
+                .antMatchers("/api/v1/users/user/**","/user").hasAnyAuthority("{ROLE_USER}","{ROLE_ADMIN}")
 //                .antMatchers(HttpMethod.POST, "/login").permitAll() //
 //                .antMatchers(HttpMethod.GET, "/login").permitAll() // For Test on Browser
                 // Need authentication.

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-//@RequestMapping("/api/v1/users")
+@RequestMapping("/api/v1/users")
 public class UserController {
     @GetMapping("/")
     public String main(){
