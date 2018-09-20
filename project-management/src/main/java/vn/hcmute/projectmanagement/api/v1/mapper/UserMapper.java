@@ -5,7 +5,7 @@ import org.mapstruct.factory.Mappers;
 import vn.hcmute.projectmanagement.api.v1.dto.UserDto;
 import vn.hcmute.projectmanagement.entity.User;
 
-@Mapper
+//@Mapper
 public interface UserMapper {
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 

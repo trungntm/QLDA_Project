@@ -18,6 +18,6 @@ public class Role {
     private long id;
     private String name;
 
-    @ManyToMany(mappedBy = "roles",fetch = FetchType.EAGER)
-    private Set<User> users;
+//    @ManyToMany(fetch = FetchType.EAGER)
+//    private Set<User> users;
 }

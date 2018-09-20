@@ -25,7 +25,7 @@ public class User {
     @OneToOne(mappedBy = "user",fetch = FetchType.LAZY)
     private Person person;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_role",
             joinColumns = @JoinColumn(name = "user_id",referencedColumnName = "id"),
