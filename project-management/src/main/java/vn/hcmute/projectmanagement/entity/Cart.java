@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity(name = "carts")
 @Data
@@ -16,6 +17,9 @@ public class Cart {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @OneToOne(mappedBy = "person",fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     private Person person;
+
+    @OneToMany(mappedBy = "id.cart")
+    private Set<Cart_Product> cart_products;
 }
