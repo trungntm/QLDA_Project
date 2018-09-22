@@ -1,20 +1,30 @@
 package vn.hcmute.projectmanagement.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import vn.hcmute.projectmanagement.api.v1.dto.UserDto;
+import vn.hcmute.projectmanagement.api.v1.mapper.UserMapper;
+import vn.hcmute.projectmanagement.entity.User;
+import vn.hcmute.projectmanagement.service.UserService;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/v1/users")
+@RequestMapping("/api/v1/")
 public class UserController {
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private UserMapper userMapper;
     @GetMapping("/")
     public String main(){
         return "hello all";
     }
 
-    @GetMapping("/user")
+    @GetMapping("/users")
     public String user(){
         return "permit user";
     }
@@ -22,5 +32,16 @@ public class UserController {
             method = RequestMethod.GET)
     public String admin(){
         return "permit admin";
+    }
+    @GetMapping("/admin/{id}")
+    public User retrieveUserById(@PathVariable long id){
+        return userService.retrieveById(id);
+    }
+    @GetMapping("/admin/users")
+    public List<UserDto> retrieveAllUsers(){
+        return userService.retrieveAllUsers()
+                .stream()
+                .map(userMapper::userToUserDto)
+                .collect(Collectors.toList());
     }
 }

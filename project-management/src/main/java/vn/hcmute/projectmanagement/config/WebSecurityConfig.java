@@ -37,8 +37,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 // No need authentication.
                 .antMatchers("/","/home").permitAll() //
-                .antMatchers("/api/v1/users/admin/**","/admin").hasAnyAuthority("{ROLE_ADMIN}")
-                .antMatchers("/api/v1/users/user/**","/user").hasAnyAuthority("{ROLE_USER}","{ROLE_ADMIN}")
+                .antMatchers("/api/v1/admin/**","/admin").hasAnyAuthority("{ROLE_ADMIN}")
+                .antMatchers("/api/v1/users/**","/user").hasAnyAuthority("{ROLE_USER}","{ROLE_ADMIN}")
 //                .antMatchers(HttpMethod.POST, "/login").permitAll() //
 //                .antMatchers(HttpMethod.GET, "/login").permitAll() // For Test on Browser
                 // Need authentication.
