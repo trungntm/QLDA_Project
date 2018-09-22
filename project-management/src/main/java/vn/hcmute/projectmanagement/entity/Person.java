@@ -45,4 +45,7 @@ public class Person {
 
     @OneToOne(fetch = FetchType.LAZY)
     private User user;
+
+    @OneToOne( fetch = FetchType.LAZY)
+    private Cart cart;
 }

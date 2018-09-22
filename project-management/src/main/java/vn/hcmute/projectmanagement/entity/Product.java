@@ -48,4 +48,6 @@ public class Product {
 
     @ManyToMany(mappedBy = "products")
     private Set<SaleOff> saleOffs;
+    @OneToMany(mappedBy = "id.product")
+    private Set<Cart_Product> cart_products;
 }
