@@ -12,7 +12,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/v1/")
+@RequestMapping("/api/v1")
+@CrossOrigin
 public class UserController {
     @Autowired
     private UserService userService;
@@ -43,5 +44,11 @@ public class UserController {
                 .stream()
                 .map(userMapper::userToUserDto)
                 .collect(Collectors.toList());
+    }
+
+    @PostMapping("/register/{username}/{password}")
+    public UserDto registerUser(@PathVariable String username, @PathVariable String password){
+        return userMapper.userToUserDto(userService.registerUser(username,password));
+
     }
 }
