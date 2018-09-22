@@ -3,7 +3,6 @@ import { NgModule, Injectable } from '@angular/core';
 import { HttpClientModule, HttpInterceptor, HttpHandler, HttpRequest, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
-import { UserComponent } from './components/user/user.component';
 import { AppRoutingModule } from './app.routing.module';
 
 @Injectable()
@@ -13,6 +12,7 @@ export class XhrInterceptor implements HttpInterceptor {
     const xhr = req.clone({
       headers: req.headers.set('X-Requested-With', 'XMLHttpRequest')
     });
+    console.log(xhr);
     return next.handle(xhr);
   }
 }
@@ -20,11 +20,10 @@ export class XhrInterceptor implements HttpInterceptor {
 @NgModule({
   declarations: [
     AppComponent,
-    UserComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
+    // AppRoutingModule,
     HttpClientModule
   ],
   providers: [],
