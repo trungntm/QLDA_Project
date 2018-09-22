@@ -4,6 +4,7 @@ import { HttpClientModule, HttpInterceptor, HttpHandler, HttpRequest, HTTP_INTER
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing.module';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 @Injectable()
 export class XhrInterceptor implements HttpInterceptor {
@@ -20,10 +21,11 @@ export class XhrInterceptor implements HttpInterceptor {
 @NgModule({
   declarations: [
     AppComponent,
+    DashboardComponent,
   ],
   imports: [
     BrowserModule,
-    // AppRoutingModule,
+    AppRoutingModule,
     HttpClientModule
   ],
   providers: [],
