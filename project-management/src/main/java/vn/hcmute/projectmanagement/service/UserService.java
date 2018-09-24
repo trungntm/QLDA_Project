@@ -7,5 +7,5 @@ import java.util.List;
 public interface UserService {
     User retrieveById(long id);
     List<User> retrieveAllUsers();
-    User registerUser(String username, String password);
+    User registerUser(User user);
 }
