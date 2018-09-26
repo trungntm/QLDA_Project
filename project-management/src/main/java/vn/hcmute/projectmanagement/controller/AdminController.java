@@ -2,11 +2,14 @@ package vn.hcmute.projectmanagement.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import vn.hcmute.projectmanagement.api.v1.data.DataReturnList;
 import vn.hcmute.projectmanagement.api.v1.dto.UserDto;
 import vn.hcmute.projectmanagement.api.v1.mapper.UserMapper;
 import vn.hcmute.projectmanagement.entity.User;
+import vn.hcmute.projectmanagement.exception.UserNotFoundException;
 import vn.hcmute.projectmanagement.service.UserService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,16 +27,25 @@ public class AdminController {
         return "permit admin";
     }
 
-    @GetMapping("/admin/{id}")
+    @GetMapping("/admin/users/{id}")
     public User retrieveUserById(@PathVariable long id){
         return userService.retrieveById(id);
     }
 
     @GetMapping("/admin/users")
-    public List<UserDto> retrieveAllUsers(){
-        return userService.retrieveAllUsers()
-                .stream()
-                .map(userMapper::userToUserDto)
-                .collect(Collectors.toList());
+    public DataReturnList<UserDto> retrieveAllUsers(){
+        DataReturnList<UserDto> dataReturnList=new DataReturnList<>();
+        List<UserDto> userDtos=userService.retrieveAllUsers()
+                                .stream()
+                                .map(userMapper::userToUserDto)
+                                .collect(Collectors.toList());
+        List<UserDto> users=new ArrayList<>();
+        if(userDtos.isEmpty()){
+            throw new UserNotFoundException("User not found!");
+        }
+        dataReturnList.setMessage("success !");
+        userDtos.forEach(user->users.add(user));
+        dataReturnList.setData(users);
+        return dataReturnList;
     }
 }

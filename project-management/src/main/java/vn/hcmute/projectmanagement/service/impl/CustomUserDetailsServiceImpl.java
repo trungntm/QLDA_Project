@@ -7,9 +7,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import vn.hcmute.projectmanagement.entity.Privilege;
+import vn.hcmute.projectmanagement.entity.Role;
 import vn.hcmute.projectmanagement.entity.User;
 import vn.hcmute.projectmanagement.repository.UserRepository;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -28,6 +31,39 @@ public class CustomUserDetailsServiceImpl implements UserDetailsService {
         System.out.println("user login : "+user);
         Set<GrantedAuthority> grantedAuthorities=new HashSet<>();
         user.getRoles().forEach(role->grantedAuthorities.add(new SimpleGrantedAuthority(role.getName())));
-        return new org.springframework.security.core.userdetails.User(user.getUsername(),user.getPassword(),grantedAuthorities);
+        // add privileges into roles
+        //
+        return new org.springframework.security.core.userdetails.User(user.getUsername(),user.getPassword(),getAuthorities(user.getRoles()));
+//        return new org.springframework.security.core.userdetails.User(user.getUsername(),user.getPassword(),grantedAuthorities);
+    }
+
+    private Collection<? extends GrantedAuthority> getAuthorities(
+            Set<Role> roles) {
+        Set<GrantedAuthority> authorities
+                = new HashSet<>();
+        for (Role role: roles) {
+            authorities.add(new SimpleGrantedAuthority(role.getName()));
+            role.getPrivileges().stream()
+                    .map(p -> new SimpleGrantedAuthority(p.getName()))
+                    .forEach(authorities::add);
+        }
+        return authorities;
+    }
+    private Set<GrantedAuthority> getGrantedAuthorities(Set<String> privileges) {
+        Set<GrantedAuthority> authorities = new HashSet<>();
+        for (String privilege : privileges) {
+            authorities.add(new SimpleGrantedAuthority(privilege));
+        }
+        return authorities;
+    }
+    private Set<String> getPrivileges(Set<Role> roles) {
+
+        Set<String> privileges = new HashSet<>();
+        Set<Privilege> collection = new HashSet<>();
+
+        roles.forEach(role -> collection.addAll(role.getPrivileges()));
+
+        collection.forEach(privilege -> privileges.add(privilege.getName()));
+        return privileges;
     }
 }
