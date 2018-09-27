@@ -5,23 +5,25 @@ import { HttpClientModule, HttpInterceptor, HttpHandler, HttpRequest, HTTP_INTER
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { UserComponent } from './user/user.component';
 
-@Injectable()
-export class XhrInterceptor implements HttpInterceptor {
+// @Injectable()
+// export class XhrInterceptor implements HttpInterceptor {
 
-  intercept(req: HttpRequest<any>, next: HttpHandler) {
-    const xhr = req.clone({
-      headers: req.headers.set('X-Requested-With', 'XMLHttpRequest')
-    });
-    console.log(xhr);
-    return next.handle(xhr);
-  }
-}
+//   intercept(req: HttpRequest<any>, next: HttpHandler) {
+//     const xhr = req.clone({
+//       headers: req.headers.set('X-Requested-With', 'XMLHttpRequest')
+//     });
+//     console.log(xhr);
+//     return next.handle(xhr);
+//   }
+// }
 
 @NgModule({
   declarations: [
     AppComponent,
     DashboardComponent,
+    UserComponent,
   ],
   imports: [
     BrowserModule,
