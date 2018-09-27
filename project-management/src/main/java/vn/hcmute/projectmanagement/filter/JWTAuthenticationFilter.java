@@ -15,9 +15,6 @@ import java.io.IOException;
 
 public class JWTAuthenticationFilter extends GenericFilterBean {
 
-    static final String TOKEN_PREFIX = "Bearer";
-
-    static final String HEADER_STRING = "Authorization";
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
@@ -27,7 +24,6 @@ public class JWTAuthenticationFilter extends GenericFilterBean {
 
         Authentication authentication = TokenAuthenticationService
                 .getAuthentication((HttpServletRequest) servletRequest);
-        System.out.println(((HttpServletRequest) servletRequest).getHeader(HEADER_STRING));
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         filterChain.doFilter(servletRequest, servletResponse);

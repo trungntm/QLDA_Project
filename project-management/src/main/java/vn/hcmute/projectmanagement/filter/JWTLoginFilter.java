@@ -47,6 +47,7 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
         System.out.println("*****JWTLoginFilter.successfulAuthentication :" + authResult.getAuthorities());
 
         String authorizationString = response.getHeader("Authorization");
+        response.setContentType("application/json");
 
         System.out.println("Token Authorization String=" + authorizationString);
     }

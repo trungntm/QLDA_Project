@@ -13,11 +13,13 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import vn.hcmute.projectmanagement.filter.JWTAuthenticationFilter;
 import vn.hcmute.projectmanagement.filter.JWTLoginFilter;
 
 @Configuration
 @EnableWebSecurity
+@CrossOrigin
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Qualifier("customUserDetailsServiceImpl")
     @Autowired

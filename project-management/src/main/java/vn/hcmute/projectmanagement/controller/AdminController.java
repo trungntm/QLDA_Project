@@ -1,6 +1,7 @@
 package vn.hcmute.projectmanagement.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
 import vn.hcmute.projectmanagement.api.v1.data.DataReturnList;
 import vn.hcmute.projectmanagement.api.v1.dto.UserDto;
@@ -9,12 +10,14 @@ import vn.hcmute.projectmanagement.entity.User;
 import vn.hcmute.projectmanagement.exception.UserNotFoundException;
 import vn.hcmute.projectmanagement.service.UserService;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/")
+
 public class AdminController {
     @Autowired
     private UserService userService;
@@ -33,7 +36,7 @@ public class AdminController {
     }
 
     @GetMapping("/admin/users")
-    public DataReturnList<UserDto> retrieveAllUsers(){
+    public DataReturnList<UserDto> retrieveAllUsers(@RequestHeader("Authorization") String header){
         DataReturnList<UserDto> dataReturnList=new DataReturnList<>();
         List<UserDto> userDtos=userService.retrieveAllUsers()
                                 .stream()
@@ -46,6 +49,10 @@ public class AdminController {
         dataReturnList.setMessage("success !");
         userDtos.forEach(user->users.add(user));
         dataReturnList.setData(users);
+//        res.getHeader("Authorization");
+//        HttpHeaders headers=new HttpHeaders();
+//        headers.add("Authorization",header);
+        System.out.println("response token : "+header);
         return dataReturnList;
     }
 }
