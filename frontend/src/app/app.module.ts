@@ -21,7 +21,7 @@ export class XhrInterceptor implements HttpInterceptor {
 @NgModule({
   declarations: [
     AppComponent,
-    DashboardComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,
