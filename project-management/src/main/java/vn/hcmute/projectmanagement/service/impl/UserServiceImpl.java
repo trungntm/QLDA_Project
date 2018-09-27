@@ -5,9 +5,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import vn.hcmute.projectmanagement.entity.Privilege;
 import vn.hcmute.projectmanagement.entity.Role;
 import vn.hcmute.projectmanagement.entity.User;
 import vn.hcmute.projectmanagement.exception.UserNotFoundException;
+import vn.hcmute.projectmanagement.repository.PrivilegeRepository;
 import vn.hcmute.projectmanagement.repository.RoleRepository;
 import vn.hcmute.projectmanagement.repository.UserRepository;
 import vn.hcmute.projectmanagement.service.UserService;
@@ -29,6 +31,8 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private RoleRepository roleRepository;
 
+    @Autowired
+    private PrivilegeRepository privilegeRepository;
     @Override
     public User retrieveById(long id) {
         Optional<User> userOptional=userRepository.findById(id);
@@ -50,6 +54,12 @@ public class UserServiceImpl implements UserService {
     // register will set role default is ROLE_USER
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         Role role = roleRepository.findByName("ROLE_USER").get();
+//        Set<Privilege> privileges=new HashSet<>();
+//        Privilege _privilege_default_read=privilegeRepository.findByName("READ_PRIVILEGE").get();
+//        Privilege _privilege_default_write=privilegeRepository.findByName("WRITE_PRIVILEGE").get();
+//        privileges.add(_privilege_default_write);
+//        privileges.add(_privilege_default_read);
+//        role.setPrivileges(privileges);
         Set<Role> roles=new HashSet<>();
         roles.add(role);
         user.setRoles(roles);
