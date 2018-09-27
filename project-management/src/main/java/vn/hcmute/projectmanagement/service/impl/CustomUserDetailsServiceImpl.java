@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import vn.hcmute.projectmanagement.entity.Role;
 import vn.hcmute.projectmanagement.entity.User;
 import vn.hcmute.projectmanagement.repository.UserRepository;
 
@@ -28,6 +29,7 @@ public class CustomUserDetailsServiceImpl implements UserDetailsService {
         System.out.println("user login : "+user);
         Set<GrantedAuthority> grantedAuthorities=new HashSet<>();
         user.getRoles().forEach(role->grantedAuthorities.add(new SimpleGrantedAuthority(role.getName())));
+
         return new org.springframework.security.core.userdetails.User(user.getUsername(),user.getPassword(),grantedAuthorities);
     }
 }
