@@ -16,26 +16,25 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/v1/")
-
+@RequestMapping("/api/v1/admin/")
 public class AdminController {
     @Autowired
     private UserService userService;
 
     @Autowired
     private UserMapper userMapper;
-    @RequestMapping(value = "/admin", //
+    @RequestMapping(value = "", //
             method = RequestMethod.GET)
     public String admin(){
         return "permit admin";
     }
 
-    @GetMapping("/admin/users/{id}")
+    @GetMapping("/users/{id}")
     public User retrieveUserById(@PathVariable long id){
         return userService.retrieveById(id);
     }
 
-    @GetMapping("/admin/users")
+    @GetMapping("/users")
     public DataReturnList<UserDto> retrieveAllUsers(@RequestHeader("Authorization") String header){
         DataReturnList<UserDto> dataReturnList=new DataReturnList<>();
         List<UserDto> userDtos=userService.retrieveAllUsers()
