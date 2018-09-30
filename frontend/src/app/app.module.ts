@@ -5,6 +5,10 @@ import { HttpClientModule, HttpInterceptor, HttpHandler, HttpRequest, HTTP_INTER
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { LoginComponent } from './login/login.component';
+import { FormsModule } from '@angular/forms';
+import { UserComponent } from './user/user.component';
+import * as angularJwt from '@auth0/angular-jwt';
 
 @Injectable()
 export class XhrInterceptor implements HttpInterceptor {
@@ -21,12 +25,16 @@ export class XhrInterceptor implements HttpInterceptor {
 @NgModule({
   declarations: [
     AppComponent,
-    DashboardComponent
+    DashboardComponent,
+    LoginComponent,
+    UserComponent
   ],
   imports: [
     BrowserModule,
+    FormsModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    angularJwt.JwtModule
   ],
   providers: [],
   bootstrap: [AppComponent]

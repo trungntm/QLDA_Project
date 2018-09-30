@@ -18,7 +18,9 @@ export class UserComponent implements OnInit {
 
   ngOnInit() {
     this.userService.getAllUsers().subscribe(res => {
+      console.log(res);
       let author: String = res.headers.get('authorization');
+      console.log(author);
       const tokenIndex = author.lastIndexOf(' ') + 1;
       let token = author.substr(tokenIndex);
       console.log(token);

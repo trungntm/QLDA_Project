@@ -4,9 +4,6 @@ import { Observable } from 'rxjs';
 import { AppComponent } from '../app.component'
 import { environment } from '../../environments/environment';
 
-const httpOptions = {
-  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-}
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +11,7 @@ const httpOptions = {
 
 export class UserService {
 
+  // get url from environment
   url = environment.url;
 
   constructor(private http: HttpClient) {
@@ -24,6 +22,8 @@ export class UserService {
   }
 
   getAllUsers(): Observable<any> {
+    // return this.http.get(this.url + `/login?username=admin&password=admin`, { observe: `response` });
     return this.http.get(this.url + `/login?username=admin&password=admin`, { observe: `response` });
+
   }
 }

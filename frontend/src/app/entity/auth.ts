@@ -1,3 +1,4 @@
 export class Auth {
-  token_string: string;
+  username: string;
+  password: string;
 }
