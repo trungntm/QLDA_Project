@@ -1,9 +1,10 @@
+import { Route, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { Auth } from '../entity/auth';
-import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../service/auth.service';
-import { FormGroup, NgForm } from '@angular/forms';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { first } from 'rxjs/operators';
+import { FormGroup, FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
@@ -30,15 +31,19 @@ export class LoginComponent implements OnInit {
     password: ""
   };
   jwtHelper: JwtHelperService;
-  constructor(private http: HttpClient, private authService: AuthService) {
+  form: FormGroup;
+  constructor(private route: Router, private authService: AuthService) {
     this.jwtHelper = new JwtHelperService();
   }
 
   ngOnInit() {
+    this.authService.Logout();
+
   }
 
   login() {
     this.authService.Login(this.auth)
+      .pipe(first())
       .subscribe(res => {
         console.log(res);
         let author: String = res.headers.get('Authorization');
@@ -46,10 +51,12 @@ export class LoginComponent implements OnInit {
         let token = author.substr(tokenIndex);
         console.log(token);
         if (token) {
-          localStorage.setItem('access_token', token);
-          console.log(localStorage.getItem('access_token'));
+          localStorage.setItem("access_token", token);
+          // this.tokenHelper.SetToken(token);
           const decodedToken = this.jwtHelper.decodeToken(token);
-          console.log(decodedToken);
+          const isExpired = this.jwtHelper.isTokenExpired(token);
+
+          this.route.navigate(['/']);
         }
       });
   }
