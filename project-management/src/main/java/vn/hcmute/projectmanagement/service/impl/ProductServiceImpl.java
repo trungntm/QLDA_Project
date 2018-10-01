@@ -21,7 +21,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product getProductById(long id) {
-        Optional<Product> product = productRepository.findproductsById(id);
+        Optional<Product> product = productRepository.findProductsById(id);
         if(!product.isPresent()){
             throw new Error404("Product Not Found");
         }
@@ -41,7 +41,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public boolean DeleteProduct(long id) {
-        Product product = productRepository.findproductsById(id).get();
+        Product product = productRepository.findProductsById(id).get();
         if(product != null){
             try {
                 product.setStatus("false");
