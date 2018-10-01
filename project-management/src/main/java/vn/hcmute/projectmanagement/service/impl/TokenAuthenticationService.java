@@ -17,13 +17,14 @@ import java.util.stream.Collectors;
 public class TokenAuthenticationService {
     static final long EXPIRATIONTIME = 864_000; // 1 days
 
-    static final String SECRET = "ThisIsASecret";
+    static final String SECRET = "SecretKeyIsProjectManagement";
 
     static final String TOKEN_PREFIX = "Bearer";
 
     static final String HEADER_STRING = "Authorization";
 
-    public static void addAuthentication(HttpServletResponse res, String username, Authentication auth) {
+    public static void addAuthentication(HttpServletResponse res,  Authentication auth) {
+        String username=auth.getName();
         Claims claims=Jwts.claims().setSubject(username);
         claims.put("authorities",auth.getAuthorities().stream().map(s -> new SimpleGrantedAuthority(s.getAuthority())).filter(Objects::nonNull).collect(Collectors.toList()));
         String JWT = Jwts.builder().setSubject(username)
@@ -36,18 +37,14 @@ public class TokenAuthenticationService {
 
     public static Authentication getAuthentication(HttpServletRequest request) {
         String token = request.getHeader(HEADER_STRING);
+        System.out.println(token);
         if (token != null) {
             // parse the token.
-            String user = retrieveUsernameByToke(token);
-            System.out.println("user getAuthentication "+user);
-            System.out.println(getClaimsByToken(token).get("authorities"));
-            List<Object> authorities= (List<Object>) getClaimsByToken(token).get("authorities");
-//            System.out.println("user getAuthentication "+authorities.get(0));
+            String user = retrieveUsernameByToke(token); // lay username tu token
+            List<Object> authorities= (List<Object>) getClaimsByToken(token).get("authorities"); // lay list quyen tu token
             Collection<SimpleGrantedAuthority> grantedAuthorities=new HashSet<>();
-            authorities.forEach(role->grantedAuthorities.add(new SimpleGrantedAuthority(role.toString().replace("authority=",""))));
-            System.out.println("user getAuthentication "+grantedAuthorities.toString());
+            authorities.forEach(role->grantedAuthorities.add(new SimpleGrantedAuthority(role.toString().replace("authority=","").replace("{","").replace("}",""))));
 
-//            System.out.println("User Details : "+userDetails);
             return user != null ? new UsernamePasswordAuthenticationToken(user,null,grantedAuthorities) : null;
         }
         return null;
