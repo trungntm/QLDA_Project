@@ -7,9 +7,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import vn.hcmute.projectmanagement.entity.Role;
 import vn.hcmute.projectmanagement.entity.User;
 import vn.hcmute.projectmanagement.repository.UserRepository;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -25,8 +27,19 @@ public class CustomUserDetailsServiceImpl implements UserDetailsService {
         if(!userOptional.isPresent())
             throw new UsernameNotFoundException("User name not found in function loadUserByUsername. Please check again! ");
         User user=userOptional.get();
-        Set<GrantedAuthority> grantedAuthorities=new HashSet<>();
-        user.getRoles().forEach(role->grantedAuthorities.add(new SimpleGrantedAuthority(role.getName())));
-        return new org.springframework.security.core.userdetails.User(user.getUsername(),user.getPassword(),grantedAuthorities);
+        return new org.springframework.security.core.userdetails.User(user.getUsername(),user.getPassword(),getAuthorities(user.getRoles()));
+    }
+
+    private Collection<? extends GrantedAuthority> getAuthorities(
+            Set<Role> roles) {
+        Set<GrantedAuthority> authorities
+                = new HashSet<>();
+        for (Role role: roles) {
+            authorities.add(new SimpleGrantedAuthority(role.getName()));
+            role.getPrivileges().stream()
+                    .map(p -> new SimpleGrantedAuthority(p.getName()))
+                    .forEach(authorities::add);
+        }
+        return authorities;
     }
 }
