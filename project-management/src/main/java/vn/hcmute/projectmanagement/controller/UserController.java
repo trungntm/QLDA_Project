@@ -25,7 +25,7 @@ public class UserController {
     public String user(){
         return "permit user";
     }
-
+    // register user
     @PostMapping("/register")
     public UserDto registerUser(@RequestBody User user){
         return userMapper.userToUserDto(userService.registerUser(user));
