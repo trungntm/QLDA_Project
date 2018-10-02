@@ -9,6 +9,9 @@ import { LoginComponent } from './login/login.component';
 import { FormsModule } from '@angular/forms';
 import { UserComponent } from './user/user.component';
 import * as angularJwt from '@auth0/angular-jwt';
+import { HeaderComponent } from './header/header.component';
+import { FooterComponent } from './footer/footer.component';
+import { MenuComponent } from './menu/menu.component';
 
 @Injectable()
 export class XhrInterceptor implements HttpInterceptor {
@@ -27,7 +30,10 @@ export class XhrInterceptor implements HttpInterceptor {
     AppComponent,
     DashboardComponent,
     LoginComponent,
-    UserComponent
+    UserComponent,
+    HeaderComponent,
+    FooterComponent,
+    MenuComponent
   ],
   imports: [
     BrowserModule,
