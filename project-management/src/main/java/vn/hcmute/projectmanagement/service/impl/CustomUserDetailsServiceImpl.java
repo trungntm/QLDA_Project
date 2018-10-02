@@ -27,10 +27,6 @@ public class CustomUserDetailsServiceImpl implements UserDetailsService {
         if(!userOptional.isPresent())
             throw new UsernameNotFoundException("User name not found in function loadUserByUsername. Please check again! ");
         User user=userOptional.get();
-//        System.out.println("user login : "+user);
-//        Set<GrantedAuthority> grantedAuthorities=new HashSet<>();
-//        user.getRoles().forEach(role->grantedAuthorities.add(new SimpleGrantedAuthority(role.getName())));
-
         return new org.springframework.security.core.userdetails.User(user.getUsername(),user.getPassword(),getAuthorities(user.getRoles()));
     }
 

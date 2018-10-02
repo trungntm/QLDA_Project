@@ -73,13 +73,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception{
         auth.userDetailsService(customUserDetailsService).passwordEncoder(bCryptPasswordEncoder());
-        System.out.print(customUserDetailsService);
-//          auth.inMemoryAuthentication()
-//                .withUser("user").password("$2a$10$1u6kgOhEGj8kROJoBy9cme.vNLX09vFzH9mcvS2TDc13ozSGXC0W2").roles("USER")
-//                .and()
-//                .withUser("admin").password("$2a$10$1u6kgOhEGj8kROJoBy9cme.vNLX09vFzH9mcvS2TDc13ozSGXC0W2").roles("ADMIN");
     }
     private final long MAX_AGE_SECS = 864_000;
+
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {

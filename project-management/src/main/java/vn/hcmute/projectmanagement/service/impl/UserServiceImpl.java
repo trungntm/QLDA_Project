@@ -1,14 +1,11 @@
 package vn.hcmute.projectmanagement.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import vn.hcmute.projectmanagement.entity.Privilege;
 import vn.hcmute.projectmanagement.entity.Role;
 import vn.hcmute.projectmanagement.entity.User;
-import vn.hcmute.projectmanagement.exception.UserNotFoundException;
+import vn.hcmute.projectmanagement.exception.NotFoundException;
 import vn.hcmute.projectmanagement.repository.PrivilegeRepository;
 import vn.hcmute.projectmanagement.repository.RoleRepository;
 import vn.hcmute.projectmanagement.repository.UserRepository;
@@ -37,7 +34,7 @@ public class UserServiceImpl implements UserService {
     public User retrieveById(long id) {
         Optional<User> userOptional=userRepository.findById(id);
         if(!userOptional.isPresent())
-            throw new UserNotFoundException("user not found");
+            throw new NotFoundException("user not found");
         return userOptional.get();
     }
 
@@ -45,7 +42,7 @@ public class UserServiceImpl implements UserService {
     public List<User> retrieveAllUsers() {
         List<User> users=userRepository.findAll();
         if(users.isEmpty())
-            throw new UserNotFoundException("user not found");
+            throw new NotFoundException("user not found");
         return users;
     }
 
@@ -54,15 +51,39 @@ public class UserServiceImpl implements UserService {
     // register will set role default is ROLE_USER
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         Role role = roleRepository.findByName("ROLE_USER").get();
-//        Set<Privilege> privileges=new HashSet<>();
-//        Privilege _privilege_default_read=privilegeRepository.findByName("READ_PRIVILEGE").get();
-//        Privilege _privilege_default_write=privilegeRepository.findByName("WRITE_PRIVILEGE").get();
-//        privileges.add(_privilege_default_write);
-//        privileges.add(_privilege_default_read);
-//        role.setPrivileges(privileges);
         Set<Role> roles=new HashSet<>();
         roles.add(role);
         user.setRoles(roles);
+        return userRepository.save(user);
+    }
+
+    @Override
+    public User updateRoleForUser(long uid, long rid) {
+        Optional<User> userOptional =userRepository.findById(uid);
+        if(!userOptional.isPresent())
+            throw new NotFoundException("User not found. Could not update role for this user");
+        Optional<Role> roleOptional=roleRepository.findById(rid);
+        if(!roleOptional.isPresent())
+            throw new NotFoundException("Role not found. Please check again");
+        User user=userOptional.get();
+        Role role=roleOptional.get();
+        Set<Role> userRoles=user.getRoles();
+        if(userRoles.contains(role))
+            userRoles.remove(role);
+        else
+            userRoles.add(role);
+        user.setRoles(userRoles);
+        return userRepository.save(user);
+    }
+    @Override
+    public User updateUserStatus(long uid){
+        Optional<User> userOptional=userRepository.findById(uid);
+        if(!userOptional.isPresent())
+            throw new NotFoundException("User not found. Could not update role for this user");
+        User user=userOptional.get();
+        if(user.getStatus()==0)
+            user.setStatus(1);
+        else user.setStatus(0);
         return userRepository.save(user);
     }
 }
