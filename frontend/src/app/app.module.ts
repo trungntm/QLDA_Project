@@ -12,18 +12,22 @@ import * as angularJwt from '@auth0/angular-jwt';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { MenuComponent } from './menu/menu.component';
+import { AuthGuard } from './helper/auth.guard';
+import { AuthService } from './service/auth.service';
+import { HttpAuthInterceptor } from './helper/http-auth-interceptor';
+import { ErrorInterceptor } from './helper/error-interceptor';
 
-@Injectable()
-export class XhrInterceptor implements HttpInterceptor {
+// @Injectable()
+// export class XhrInterceptor implements HttpInterceptor {
 
-  intercept(req: HttpRequest<any>, next: HttpHandler) {
-    const xhr = req.clone({
-      headers: req.headers.set('X-Requested-With', 'XMLHttpRequest')
-    });
-    console.log(xhr);
-    return next.handle(xhr);
-  }
-}
+//   intercept(req: HttpRequest<any>, next: HttpHandler) {
+//     const xhr = req.clone({
+//       headers: req.headers.set('X-Requested-With', 'XMLHttpRequest')
+//     });
+//     console.log(xhr);
+//     return next.handle(xhr);
+//   }
+// }
 
 @NgModule({
   declarations: [
@@ -42,7 +46,10 @@ export class XhrInterceptor implements HttpInterceptor {
     HttpClientModule,
     angularJwt.JwtModule
   ],
-  providers: [],
+  providers: [AuthGuard, AuthService,
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: HttpAuthInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

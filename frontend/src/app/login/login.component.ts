@@ -4,7 +4,6 @@ import { Auth } from '../entity/auth';
 import { AuthService } from '../service/auth.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { first } from 'rxjs/operators';
-import { FormGroup, FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
@@ -31,14 +30,11 @@ export class LoginComponent implements OnInit {
     password: ""
   };
   jwtHelper: JwtHelperService;
-  form: FormGroup;
   constructor(private route: Router, private authService: AuthService) {
     this.jwtHelper = new JwtHelperService();
   }
 
   ngOnInit() {
-    this.authService.Logout();
-
   }
 
   login() {
@@ -49,16 +45,19 @@ export class LoginComponent implements OnInit {
         let author: String = res.headers.get('Authorization');
         const tokenIndex = author.lastIndexOf(' ') + 1;
         let token = author.substr(tokenIndex);
-        console.log(token);
         if (token) {
           localStorage.setItem("access_token", token);
           // this.tokenHelper.SetToken(token);
           const decodedToken = this.jwtHelper.decodeToken(token);
-          const isExpired = this.jwtHelper.isTokenExpired(token);
+          localStorage.setItem("sub_token", decodedToken.sub);
+          // const isExpired = this.jwtHelper.isTokenExpired(token);
 
           this.route.navigate(['/']);
         }
-      });
+      },
+        err => {
+          console.log("login fail : " + err);
+        });
   }
 
 }
