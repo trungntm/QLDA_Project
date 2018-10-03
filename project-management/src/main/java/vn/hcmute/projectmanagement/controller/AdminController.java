@@ -29,11 +29,26 @@ public class AdminController {
         return "permit admin";
     }
 
-    @GetMapping("/users/{id}")
-    public User retrieveUserById(@PathVariable long id){
-        return userService.retrieveById(id);
+    // retrieve user by id // chua xong
+    @GetMapping("/users/search")
+    public DataReturnOne<UserDto> retrieveUserById(@RequestParam(required = false) long id,@RequestParam(required = false) String username){
+        DataReturnOne<UserDto> dataReturnOne=new DataReturnOne<>();
+        dataReturnOne.setSuccess("true");
+        dataReturnOne.setMessage("success");
+        dataReturnOne.setData(userMapper.userToUserDto(userService.retrieveUserByIdOrUsername(id,username)));
+        return dataReturnOne;
     }
 
+
+//    @GetMapping("/users/{username}")
+//    public DataReturnOne<UserDto> retrieveUserByUsername(@PathVariable String username){
+//        DataReturnOne<UserDto> dataReturnOne=new DataReturnOne<>();
+//        dataReturnOne.setSuccess("true");
+//        dataReturnOne.setMessage("success");
+//        dataReturnOne.setData(userMapper.userToUserDto(userService.retrieveUserByUsername(username)));
+//        return dataReturnOne;
+//    }
+    // retrieve all users
     @GetMapping("/users")
     public DataReturnList<UserDto> retrieveAllUsers(@RequestHeader("Authorization") String header){
         DataReturnList<UserDto> dataReturnList=new DataReturnList<>();
@@ -53,7 +68,7 @@ public class AdminController {
     }
     // update role for user
     @PutMapping("/users/role/{uid}/{rid}")
-    public DataReturnOne<UserDto> UpdateRoleForUser(@PathVariable long uid, @PathVariable long rid){
+    public DataReturnOne<UserDto> updateUserRole(@PathVariable long uid, @PathVariable long rid){
         DataReturnOne<UserDto> dataReturnOne=new DataReturnOne<>();
         dataReturnOne.setMessage("success");
         dataReturnOne.setSuccess("true");
@@ -63,11 +78,13 @@ public class AdminController {
 
     // update status for user
     @PutMapping("/users/status/{uid}")
-    public DataReturnOne<UserDto> DisableUser(@PathVariable long uid){
+    public DataReturnOne<UserDto> updateUserStatus(@PathVariable long uid){
         DataReturnOne<UserDto> dataReturnOne=new DataReturnOne<>();
         dataReturnOne.setSuccess("true");
         dataReturnOne.setMessage("success");
         dataReturnOne.setData(userMapper.userToUserDto(userService.updateUserStatus(uid)));
         return dataReturnOne;
     }
+
+
 }

@@ -10,4 +10,6 @@ public interface UserService {
     User registerUser(User user);
     User updateRoleForUser(long uid,long rid);
     User updateUserStatus(long id);
+    User retrieveUserByUsername(String username);
+    User retrieveUserByIdOrUsername(long id, String username);
 }
