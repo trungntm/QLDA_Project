@@ -4,7 +4,6 @@ import { Auth } from '../entity/auth';
 import { AuthService } from '../service/auth.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { first } from 'rxjs/operators';
-
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -30,15 +29,17 @@ export class LoginComponent implements OnInit {
     password: ""
   };
   jwtHelper: JwtHelperService;
-  constructor(private route: Router, private authService: AuthService) {
+  error: string;
+  constructor(private router: Router, private authService: AuthService) {
     this.jwtHelper = new JwtHelperService();
   }
 
   ngOnInit() {
+    this.Logout();
   }
 
   login() {
-    this.authService.Login(this.auth)
+    this.authService.Login(this.auth.username, this.auth.password)
       .pipe(first())
       .subscribe(res => {
         console.log(res);
@@ -50,14 +51,17 @@ export class LoginComponent implements OnInit {
           // this.tokenHelper.SetToken(token);
           const decodedToken = this.jwtHelper.decodeToken(token);
           localStorage.setItem("sub_token", decodedToken.sub);
-          // const isExpired = this.jwtHelper.isTokenExpired(token);
 
-          this.route.navigate(['/']);
+          this.router.navigate(['/index']);
         }
       },
         err => {
           console.log("login fail : " + err);
+          this.error = err;
         });
   }
 
+  Logout() {
+    localStorage.removeItem("access_token");
+  }
 }
