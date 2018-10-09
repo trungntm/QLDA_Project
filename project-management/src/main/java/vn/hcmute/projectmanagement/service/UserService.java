@@ -8,6 +8,7 @@ public interface UserService {
     User retrieveById(long id);
     List<User> retrieveAllUsers();
     User registerUser(User user);
+    User updateRegisterUser(User user,long pid);
     User updateRoleForUser(long uid,long rid);
     User updateUserStatus(long id);
     User retrieveUserByUsername(String username);

@@ -3,9 +3,11 @@ package vn.hcmute.projectmanagement.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import vn.hcmute.projectmanagement.entity.Person;
 import vn.hcmute.projectmanagement.entity.Role;
 import vn.hcmute.projectmanagement.entity.User;
 import vn.hcmute.projectmanagement.exception.NotFoundException;
+import vn.hcmute.projectmanagement.repository.PersonRepository;
 import vn.hcmute.projectmanagement.repository.PrivilegeRepository;
 import vn.hcmute.projectmanagement.repository.RoleRepository;
 import vn.hcmute.projectmanagement.repository.UserRepository;
@@ -29,7 +31,7 @@ public class UserServiceImpl implements UserService {
     private RoleRepository roleRepository;
 
     @Autowired
-    private PrivilegeRepository privilegeRepository;
+    private PersonRepository personRepository;
     @Override
     public User retrieveById(long id) {
         Optional<User> userOptional=userRepository.findById(id);
@@ -49,11 +51,18 @@ public class UserServiceImpl implements UserService {
     @Override
     public User registerUser(User user) {
     // register will set role default is ROLE_USER
+        user.setStatus(1);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         Role role = roleRepository.findByName("ROLE_USER").get();
         Set<Role> roles=new HashSet<>();
         roles.add(role);
         user.setRoles(roles);
+        return userRepository.save(user);
+    }
+
+    @Override
+    public User updateRegisterUser(User user,long pid) {
+        user.setPerson(personRepository.findById(pid).get());
         return userRepository.save(user);
     }
 
