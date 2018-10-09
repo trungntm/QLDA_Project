@@ -57,9 +57,23 @@ public class UserController {
     }
     // register user
     @PostMapping("/register")
-    public UserDto registerUser(@RequestBody User user){
-        return userMapper.userToUserDto(userService.registerUser(user));
+    public UserDto register(@RequestBody RegisterModel registerModel){
+        System.out.println(registerModel);
+        User user=new User();
+        user.setUsername(registerModel.getUsername());
+        user.setPassword(registerModel.getPassword());
+        Person person=new Person();
+        person.setFullName(registerModel.getFullName());
+        person.setPhone(registerModel.getPhone());
+        person.setSex(registerModel.getSex());
+        person.setEmail(registerModel.getEmail());
+        person.setDateOfBirth(registerModel.getDob());
+        person.setAddress(registerModel.getAddress());
 
+        User userCreated=userService.registerUser(user);
+        Person personCreated=personService.createPerson(person,userCreated.getId());
+        User userUpdated=userService.updateRegisterUser(userCreated,personCreated.getId());
+        return userMapper.userToUserDto(userUpdated);
     }
 
     @GetMapping("/productincart/{userName}")

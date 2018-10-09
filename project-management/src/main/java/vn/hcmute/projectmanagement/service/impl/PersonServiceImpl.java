@@ -13,6 +13,9 @@ import java.util.Optional;
 public class PersonServiceImpl implements PersonService {
     @Autowired
     private PersonRepository personRepository;
+	
+	@Autowired
+    private UserRepository userRepository;
 
     @Override
     public Person findPersonById(Long id) {
@@ -20,5 +23,13 @@ public class PersonServiceImpl implements PersonService {
         if(!person.isPresent())
             throw new NotFoundException("Not Found Person");
         return person.get();
+    }
+	
+	@Override
+    public Person createPerson(Person person,long uid) {
+        person.setDateCreated(new Date());
+        person.setUser(userRepository.findById(uid).get());
+        person.setUserCreated(person.getUser().getUsername());
+        return personRepository.save(person);
     }
 }
