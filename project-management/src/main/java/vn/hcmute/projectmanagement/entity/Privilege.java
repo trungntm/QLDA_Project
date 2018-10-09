@@ -14,7 +14,7 @@ import java.util.Set;
 public class Privilege {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
     private String name;
 
 //    @ManyToMany(mappedBy = "privileges")

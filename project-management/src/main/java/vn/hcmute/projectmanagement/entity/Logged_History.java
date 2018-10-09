@@ -17,8 +17,8 @@ import java.util.Date;
 public class Logged_History {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
     private Date logged_time;
-    private long id_logged;
+    private Long id_logged;
     private String ip_address;
 }

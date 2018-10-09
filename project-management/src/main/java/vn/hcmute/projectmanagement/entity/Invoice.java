@@ -19,7 +19,7 @@ public class Invoice {
 
     private Long total;
 
-    private int status;
+    private Long status;
 
     private Date dateCreated;
 

@@ -3,5 +3,6 @@ package vn.hcmute.projectmanagement.service;
 import vn.hcmute.projectmanagement.entity.Person;
 
 public interface PersonService {
-    Person createPerson(Person person,long uid);
+    Person findPersonById(Long id);
+	Person createPerson(Person person,long uid);
 }
