@@ -11,6 +11,7 @@ import vn.hcmute.projectmanagement.api.v1.dto.UserDto;
 import vn.hcmute.projectmanagement.api.v1.mapper.ProductInCartMapper;
 import vn.hcmute.projectmanagement.api.v1.mapper.UserMapper;
 import vn.hcmute.projectmanagement.entity.*;
+import vn.hcmute.projectmanagement.model.RegisterModel;
 import vn.hcmute.projectmanagement.service.*;
 
 import java.util.ArrayList;

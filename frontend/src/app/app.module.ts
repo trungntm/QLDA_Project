@@ -13,9 +13,13 @@ import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { MenuComponent } from './menu/menu.component';
 import { AuthGuard } from './helper/auth.guard';
+import { AdminGuard } from './helper/admin.guard';
+import { UserGuard } from './helper/user.guard';
 import { AuthService } from './service/auth.service';
 import { HttpAuthInterceptor } from './helper/http-auth-interceptor';
 import { ErrorInterceptor } from './helper/error-interceptor';
+import { IndexComponent } from './index/index.component';
+import { RegisterComponent } from './register/register.component';
 
 // @Injectable()
 // export class XhrInterceptor implements HttpInterceptor {
@@ -37,7 +41,9 @@ import { ErrorInterceptor } from './helper/error-interceptor';
     UserComponent,
     HeaderComponent,
     FooterComponent,
-    MenuComponent
+    MenuComponent,
+    IndexComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,
@@ -46,7 +52,7 @@ import { ErrorInterceptor } from './helper/error-interceptor';
     HttpClientModule,
     angularJwt.JwtModule
   ],
-  providers: [AuthGuard, AuthService,
+  providers: [AuthGuard, AdminGuard, UserGuard, AuthService,
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: HttpAuthInterceptor, multi: true },
   ],
