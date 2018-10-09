@@ -20,6 +20,7 @@ import { HttpAuthInterceptor } from './helper/http-auth-interceptor';
 import { ErrorInterceptor } from './helper/error-interceptor';
 import { IndexComponent } from './index/index.component';
 import { RegisterComponent } from './register/register.component';
+import { ProfileComponent } from './profile/profile.component';
 
 // @Injectable()
 // export class XhrInterceptor implements HttpInterceptor {
@@ -43,7 +44,8 @@ import { RegisterComponent } from './register/register.component';
     FooterComponent,
     MenuComponent,
     IndexComponent,
-    RegisterComponent
+    RegisterComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,

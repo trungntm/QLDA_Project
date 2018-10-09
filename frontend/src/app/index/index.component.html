@@ -51,6 +51,7 @@
         <div class="col-md-6 col-sm-6 additional-nav">
           <ul class="list-unstyled list-inline pull-right">
             <ng-container *ngIf="isAuthenticated; else NoAuthenticated">
+              <li *ngIf="isAdminRole"><a href="/dashboard">Dashboard</a></li>
               <li><a href="/profile">{{sub_token}}</a></li>
               <li><a href="/login">Log Out</a></li>
             </ng-container>

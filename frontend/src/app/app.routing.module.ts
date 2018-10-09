@@ -7,6 +7,8 @@ import { AuthGuard } from './helper/auth.guard';
 import { AdminGuard } from './helper/admin.guard';
 import { IndexComponent } from './index/index.component';
 import { RegisterComponent } from './register/register.component';
+import { ProfileComponent } from './profile/profile.component';
+import { UserGuard } from './helper/user.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: '/index', pathMatch: 'full' },
@@ -25,7 +27,8 @@ const routes: Routes = [
     ]
   },
   { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent }
+  { path: 'register', component: RegisterComponent },
+  { path: 'profile', component: ProfileComponent, canActivate: [UserGuard], data: { expectedRole: 'ROLE_USER' } }
 ];
 
 @NgModule({

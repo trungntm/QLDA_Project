@@ -26,6 +26,7 @@ export class IndexComponent implements OnInit {
   sub_token: string;
   isAuthenticated: boolean;
   returnUrl: string;
+  isAdminRole: boolean;
   constructor(private route: Router, private authService: AuthService) {
 
   }
@@ -38,6 +39,9 @@ export class IndexComponent implements OnInit {
     if (this.authService.IsAuthenticated()) {
       this.token = localStorage.getItem("access_token");
       this.sub_token = localStorage.getItem("sub_token");
+      if (localStorage.getItem("ROLE_ADMIN") == "ROLE_ADMIN") {
+        this.isAdminRole = true;
+      }
       return this.isAuthenticated = true;
     }
     return this.isAuthenticated = false;

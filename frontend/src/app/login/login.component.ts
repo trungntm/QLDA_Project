@@ -51,7 +51,9 @@ export class LoginComponent implements OnInit {
           // this.tokenHelper.SetToken(token);
           const decodedToken = this.jwtHelper.decodeToken(token);
           localStorage.setItem("sub_token", decodedToken.sub);
-
+          for (let prop of decodedToken.authorities) {
+            localStorage.setItem(prop.authority, prop.authority);
+          }
           this.router.navigate(['/index']);
         }
       },
@@ -62,6 +64,6 @@ export class LoginComponent implements OnInit {
   }
 
   Logout() {
-    localStorage.removeItem("access_token");
+    localStorage.clear();
   }
 }
