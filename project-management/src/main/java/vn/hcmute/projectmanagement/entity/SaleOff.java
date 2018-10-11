@@ -31,6 +31,8 @@ public class SaleOff {
 
     private String userUpdated;
 
+    private String status;
+
     @ManyToMany
     @JoinTable(
             name = "saleoff_product",

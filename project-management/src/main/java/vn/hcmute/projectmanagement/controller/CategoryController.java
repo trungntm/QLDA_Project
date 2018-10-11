@@ -56,13 +56,13 @@ public class CategoryController {
     @DeleteMapping("/delete")
     public  DataReturnOne<Category> DeleteCategory(@RequestBody Category category){
         DataReturnOne<Category> dataReturnOne = new DataReturnOne<>();
-        boolean category1 = categoryService.DeleteCategory(category.getId());
-        if(category1 != false){
+        try{
+            categoryService.DeleteCategory(category.getId());
             dataReturnOne.setMessage("Delete Category Success");
             dataReturnOne.setData(null);
-        }else{
+        }catch (Exception e){
             dataReturnOne.setSuccess("false");
-            dataReturnOne.setMessage("Delete Category Fail");
+            dataReturnOne.setMessage(e.getMessage());
             dataReturnOne.setData(null);
         }
         return dataReturnOne;

@@ -3,6 +3,7 @@ package vn.hcmute.projectmanagement.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import vn.hcmute.projectmanagement.entity.Category;
+import vn.hcmute.projectmanagement.exception.DeleteException;
 import vn.hcmute.projectmanagement.exception.Error404;
 import vn.hcmute.projectmanagement.repository.CategoryRepository;
 import vn.hcmute.projectmanagement.service.CategoryService;
@@ -32,18 +33,11 @@ public class CategoryServiceImpl implements CategoryService {
         return categoryRepository.save(category);
     }
     @Override
-    public boolean DeleteCategory(long id){
+    public void DeleteCategory(long id){
         Category category = categoryRepository.findCategoriesById(id).get();
         if(category != null){
-            try {
-                category.setStatus("false");
-                categoryRepository.save(category);
-                return true;
-            }catch (Exception e){
-                return false;
-            }
-        }else{
-            return false;
+            category.setStatus("false");
+            categoryRepository.save(category);
         }
     }
 }

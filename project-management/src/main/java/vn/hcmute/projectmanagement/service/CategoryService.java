@@ -8,5 +8,5 @@ public interface CategoryService {
     Category retrieveById(long id);
     List<Category> retrieveAllCategories();
     Category InsertCategory(Category category);
-    boolean DeleteCategory(long id);
+    void DeleteCategory(long id);
 }
