@@ -20,8 +20,8 @@ import { HttpClientModule, HttpInterceptor, HttpHandler, HttpRequest, HTTP_INTER
     '../../assets/global/css/plugins.css',
     '../../assets/admin/layout/css/layout.css',
     '../../assets/admin/layout/css/themes/darkblue.css',
-    '../../assets/admin/layout/css/custom.css',
-  ]
+    '../../assets/admin/layout/css/custom.css'
+    ]
 })
 
 export class DashboardComponent implements OnInit {

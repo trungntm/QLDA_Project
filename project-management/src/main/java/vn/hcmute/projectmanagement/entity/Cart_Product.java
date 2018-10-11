@@ -14,5 +14,5 @@ public class Cart_Product {
     @EmbeddedId
     private Cart_Product_Id id;
 
-    private long quantity;
+    private Long quantity;
 }

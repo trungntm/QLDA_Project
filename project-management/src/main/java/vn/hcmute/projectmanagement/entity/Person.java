@@ -3,8 +3,6 @@ package vn.hcmute.projectmanagement.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.boot.autoconfigure.web.ResourceProperties;
-
 import javax.persistence.*;
 import java.util.Date;
 import java.util.Set;
@@ -28,7 +26,7 @@ public class Person {
 
     private String address;
 
-    private String Phone;
+    private String phone;
 
     private String email;
 

@@ -22,7 +22,7 @@ public class User {
     private String password;
     private int status;
 
-    @OneToOne(mappedBy = "user",fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     private Person person;
 
     @ManyToMany(fetch = FetchType.EAGER)

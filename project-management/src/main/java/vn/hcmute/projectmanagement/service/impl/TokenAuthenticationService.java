@@ -25,6 +25,7 @@ public class TokenAuthenticationService {
 
     public static void addAuthentication(HttpServletResponse res,  Authentication auth) {
         String username=auth.getName();
+
         Claims claims=Jwts.claims().setSubject(username);
         claims.put("authorities",auth.getAuthorities().stream().map(s -> new SimpleGrantedAuthority(s.getAuthority())).filter(Objects::nonNull).collect(Collectors.toList()));
         String JWT = Jwts.builder().setSubject(username)
