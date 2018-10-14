@@ -42,7 +42,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
                 .cors().and()
                 .authorizeRequests()
                 // No need authentication.
-                .antMatchers("/**","/api/v1/register/**").permitAll() //
+                .antMatchers("/api/v1/register/**").permitAll() //
                 .antMatchers("/api/v1/admin/**").hasRole("ADMIN")
                 .antMatchers("/api/v1/users/**").hasAnyRole("USER","ADMIN")
                 .antMatchers("/api/v1/admin/**","/admin").hasAnyAuthority("READ_PRIVILEGE")
@@ -50,12 +50,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter implements W
 //                .antMatchers(HttpMethod.POST, "/login").permitAll() //
 //                .antMatchers(HttpMethod.GET, "/login").permitAll() // For Test on Browser
                 // Need authentication.
-                .anyRequest().authenticated()
-                //
-                .and()
-                .formLogin()
-                .loginPage("/login")
-                .permitAll();
+                .anyRequest().authenticated();
+//                //
+//                .and()
+//                .formLogin()
+//                .loginPage("/login")
+//                .permitAll();
 
                 //
                 // Add Filter 1 - JWTLoginFilter

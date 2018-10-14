@@ -6,11 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import vn.hcmute.projectmanagement.api.v1.data.DataReturnList;
 import vn.hcmute.projectmanagement.api.v1.data.DataReturnOne;
+import vn.hcmute.projectmanagement.api.v1.dto.PersonDto;
 import vn.hcmute.projectmanagement.api.v1.dto.ProductInCartDto;
 import vn.hcmute.projectmanagement.api.v1.dto.UserDto;
+import vn.hcmute.projectmanagement.api.v1.mapper.PersonMapper;
 import vn.hcmute.projectmanagement.api.v1.mapper.ProductInCartMapper;
 import vn.hcmute.projectmanagement.api.v1.mapper.UserMapper;
 import vn.hcmute.projectmanagement.entity.*;
+import vn.hcmute.projectmanagement.exception.NotFoundException;
 import vn.hcmute.projectmanagement.model.RegisterModel;
 import vn.hcmute.projectmanagement.service.*;
 
@@ -20,7 +23,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/v1/")
+@RequestMapping("/api/v1/users/")
 @CrossOrigin
 public class UserController {
 
@@ -30,6 +33,9 @@ public class UserController {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private PersonMapper personMapper;
 
     @Autowired
     private ProductInCartMapper productInCartMapper;
@@ -52,29 +58,21 @@ public class UserController {
     @Autowired
     private InvoiceProductService invoiceProductService;
 
-    @GetMapping("/users")
-    public String user(){
-        return "permit user";
-    }
-    // register user
-    @PostMapping("/register")
-    public UserDto register(@RequestBody RegisterModel registerModel){
-        System.out.println(registerModel);
-        User user=new User();
-        user.setUsername(registerModel.getUsername());
-        user.setPassword(registerModel.getPassword());
-        Person person=new Person();
-        person.setFullName(registerModel.getFullName());
-        person.setPhone(registerModel.getPhone());
-        person.setSex(registerModel.getSex());
-        person.setEmail(registerModel.getEmail());
-        person.setDateOfBirth(registerModel.getDob());
-        person.setAddress(registerModel.getAddress());
-
-        User userCreated=userService.registerUser(user);
-        Person personCreated=personService.createPerson(person,userCreated.getId());
-        User userUpdated=userService.updateRegisterUser(userCreated,personCreated.getId());
-        return userMapper.userToUserDto(userUpdated);
+    @GetMapping("/persons/{username}")
+    public DataReturnOne<PersonDto> retrievePerson(@PathVariable String username){
+        DataReturnOne<PersonDto> personDtoDataReturnOne=new DataReturnOne<>();
+        PersonDto personDto;
+        try {
+            personDto = personMapper.personToPersonDto(userService.retrieveUserByUsername(username).getPerson());
+            personDtoDataReturnOne.setSuccess("true");
+            personDtoDataReturnOne.setMessage("success");
+            personDtoDataReturnOne.setData(personDto);
+        }catch (NotFoundException ex){
+            personDtoDataReturnOne.setSuccess("false");
+            personDtoDataReturnOne.setMessage("error");
+            personDtoDataReturnOne.setData(null);
+        }
+        return personDtoDataReturnOne;
     }
 
     @GetMapping("/productincart/{userName}")
