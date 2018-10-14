@@ -42,7 +42,6 @@ export class LoginComponent implements OnInit {
     this.authService.Login(this.auth.username, this.auth.password)
       .pipe(first())
       .subscribe(res => {
-        console.log(res);
         let author: String = res.headers.get('Authorization');
         const tokenIndex = author.lastIndexOf(' ') + 1;
         let token = author.substr(tokenIndex);

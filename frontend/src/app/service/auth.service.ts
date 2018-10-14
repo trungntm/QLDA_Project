@@ -34,4 +34,8 @@ export class AuthService {
     }
     return !this.jwtHelper.isTokenExpired(token);
   }
+
+  GetPrincipal(username: string): Observable<any> | any {
+    return this.http.get(this.url + `/api/v1/users/persons/` + username);
+  }
 }

@@ -11,7 +11,6 @@ import { Observable } from 'rxjs';
 })
 export class UserComponent implements OnInit {
 
-  users: Observable<User[]>;
   constructor(private http: HttpClient, private userService: UserService) {
     // console.log(http.options("/api/v1/admin/users"));
   }

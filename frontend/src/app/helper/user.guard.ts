@@ -17,7 +17,6 @@ export class UserGuard implements CanActivate {
     // this will be passed from the route config
     // on the data property
     const expectedRole = route.data.expectedRole;
-    console.log(expectedRole);
     const token = localStorage.getItem('access_token');
     // decode the token to get its payload
     const tokenPayload = this.jwtHelper.decodeToken(token);

@@ -10,7 +10,6 @@ export class ErrorInterceptor implements HttpInterceptor {
   constructor(private authenticationService: AuthService) { }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    console.log(request);
     return next.handle(request)
       .pipe(catchError(err => {
         if (err.status === 401 || err.status === 403) {

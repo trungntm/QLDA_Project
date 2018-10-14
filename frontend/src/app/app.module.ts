@@ -22,18 +22,6 @@ import { IndexComponent } from './index/index.component';
 import { RegisterComponent } from './register/register.component';
 import { ProfileComponent } from './profile/profile.component';
 
-// @Injectable()
-// export class XhrInterceptor implements HttpInterceptor {
-
-//   intercept(req: HttpRequest<any>, next: HttpHandler) {
-//     const xhr = req.clone({
-//       headers: req.headers.set('X-Requested-With', 'XMLHttpRequest')
-//     });
-//     console.log(xhr);
-//     return next.handle(xhr);
-//   }
-// }
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -52,7 +40,7 @@ import { ProfileComponent } from './profile/profile.component';
     FormsModule,
     AppRoutingModule,
     HttpClientModule,
-    angularJwt.JwtModule
+    angularJwt.JwtModule,
   ],
   providers: [AuthGuard, AdminGuard, UserGuard, AuthService,
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },

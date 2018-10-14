@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../service/auth.service';
 import { Observable } from 'rxjs';
+import { first } from 'rxjs/operators';
+import { Person } from '../entity/person';
+import { UserComponent } from '../user/user.component';
 
 @Component({
   selector: 'app-index',
@@ -28,7 +31,6 @@ export class IndexComponent implements OnInit {
   returnUrl: string;
   isAdminRole: boolean;
   constructor(private route: Router, private authService: AuthService) {
-
   }
 
   ngOnInit() {
@@ -46,4 +48,5 @@ export class IndexComponent implements OnInit {
     }
     return this.isAuthenticated = false;
   }
+
 }
