@@ -1,5 +1,7 @@
 <app-header></app-header>
-<app-menu></app-menu>
+<ng-container *ngIf="isAdminRole">
+  <app-menu></app-menu>
+</ng-container>
 
 <div class="page-content-wrapper" style="background-color: #364150">
   <div class="page-content" style="min-height: 710px">
@@ -19,7 +21,7 @@
             <!-- SIDEBAR USER TITLE -->
             <div class="profile-usertitle">
               <div class="profile-usertitle-name">
-                Marcus Doe
+                {{principal.fullName}}
               </div>
               <div class="profile-usertitle-job">
                 Developer
@@ -139,17 +141,22 @@
                   <div class="tab-content">
                     <!-- PERSONAL INFO TAB -->
                     <div class="tab-pane active" id="tab_1_1">
-                      <form role="form" action="#">
+                      <form role="form" method="POST" (ngSubmit)="f.form.valid && editProfile()" #f="ngForm" novalidate>
+                        <input [(ngModel)]="principal.id" name="id" value={{principal.id}} class="hidden" />
                         <div class="form-group">
                           <label class="control-label">Tên khách hàng</label>
-                          <input name="fullName" [(ngModel)]="principal.fullName" type="text" placeholder="John" class="form-control"
-                            value={{principal.fullName}} />
+                          <input name="fullName" [(ngModel)]="principal.fullName" type="text" placeholder="Enter your full name"
+                            class="form-control" value={{principal.fullName}} #fullName="ngModel" [ngClass]="{ 'is-invalid': f.submitted && fullName.invalid }"
+                            required />
+                        </div>
+                        <div *ngIf="f.submitted && fullName.invalid" class="invalid-feedback">
+                          <div *ngIf="fullName.errors.required" style="color:red;">(*) Tên khách hàng là bắt buộc</div>
                         </div>
                         <div class="form-group row">
                           <div class="col-md-8">
                             <label class="control-label">Ngày sinh</label>
                             <input id="dob" name="dateOfBirth" type="text" placeholder="25/03/1997" class="form-control"
-                              value='{{principal.dateOfBirth|date : format : dd/MM/yyyy}}' />
+                              value='{{principal.dateOfBirth|date : format : "dd/MM/yyyy"}}' />
 
                           </div>
                           <div class="col-md-4">
@@ -162,23 +169,34 @@
                         </div>
                         <div class="form-group">
                           <label class="control-label">Điện thoại</label>
-                          <input name="address" [(ngModel)]="principal.address" type="text" placeholder="+1 646 580 DEMO (6284)"
-                            class="form-control" value={{principal.phone}} />
+                          <input name="phone" [(ngModel)]="principal.address" type="text" placeholder="+1 646 580 DEMO (6284)"
+                            class="form-control" value={{principal.phone}} #phone="ngModel" [ngClass]="{ 'is-invalid': f.submitted && phone.invalid }"
+                            required />
+                        </div>
+                        <div *ngIf="f.submitted && phone.invalid" class="invalid-feedback">
+                          <div *ngIf="phone.errors.required" style="color:red;">(*) Điện thoại là bắt buộc</div>
                         </div>
                         <div class="form-group">
                           <label class="control-label">E-mail</label>
                           <input name="email" [(ngModel)]="principal.email" type="text" placeholder="email@example.com"
-                            class="form-control" value={{principal.email}} />
+                            class="form-control" value={{principal.email}} #email="ngModel" [ngClass]="{ 'is-invalid': f.submitted && email.invalid }"
+                            required />
+                        </div>
+                        <div *ngIf="f.submitted && phone.invalid" class="invalid-feedback">
+                          <div *ngIf="email.errors.required" style="color:red;">(*) E-mail là bắt buộc</div>
                         </div>
                         <div class="form-group">
                           <label class="control-label">Địa chỉ</label>
                           <input name="address" [(ngModel)]="principal.address" type="text" placeholder="71 Tân Lập 1, phường Hiệp Phú, quận 9, TP.HCM"
-                            class="form-control" value={{principal.address}} />
+                            class="form-control" value={{principal.address}} #address="ngModel" [ngClass]="{ 'is-invalid': f.submitted && address.invalid }"
+                            required />
                         </div>
-
+                        <div *ngIf="f.submitted && phone.invalid" class="invalid-feedback">
+                          <div *ngIf="address.errors.required" style="color:red;">(*) Địa chỉ là bắt buộc</div>
+                        </div>
                         <div class="margiv-top-10">
-                          <a href="#" class="btn green-haze">
-                            Save Changes </a>
+                          <button href="#" class="btn green-haze" type="submit">
+                            Save Changes </button>
                           <a href="#" class="btn default">
                             Cancel </a>
                         </div>
@@ -188,25 +206,29 @@
                     <!-- CHANGE AVATAR TAB -->
                     <div class="tab-pane" id="tab_1_2">
                       <p>
-                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid.
-                        3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt
-                        laborum eiusmod.
+                        Cập nhật hình đại diện.
                       </p>
-                      <form action="#" role="form">
+                      <form role="form" method="POST" (ngSubmit)="f1.form.valid && uploadImage()" #f1="ngForm"
+                        novalidate>
                         <div class="form-group">
                           <div class="fileinput fileinput-new" data-provides="fileinput">
                             <div class="fileinput-new thumbnail" style="width: 200px; height: 150px;">
-                              <img src="http://www.placehold.it/200x150/EFEFEF/AAAAAA&amp;text=no+image" alt="" />
+                              <ng-container *ngIf="expression; else NoImage">
+                                <img src={{principal.avatar}} alt="" />
+                              </ng-container>
+                              <ng-template #NoImage>
+                                <img src="http://www.placehold.it/200x150/EFEFEF/AAAAAA&amp;text=no+image" alt="" />
+                              </ng-template>
                             </div>
                             <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;">
                             </div>
                             <div>
                               <span class="btn default btn-file">
-                                <span class="fileinput-new">
+                                <span class="fileinput-new" (click)="fileInput.click()">
                                   Select image </span>
-                                <span class="fileinput-exists">
+                                <span class="fileinput-exists" (click)="fileInput.click()">
                                   Change </span>
-                                <input type="file" name="...">
+                                <input type="file" name="avatar" (change)="onChangedImage($event)" #fileInput>
                               </span>
                               <a href="#" class="btn default fileinput-exists" data-dismiss="fileinput">
                                 Remove </a>
@@ -219,8 +241,8 @@
                           </div>
                         </div>
                         <div class="margin-top-10">
-                          <a href="#" class="btn green-haze">
-                            Submit </a>
+                          <button type="submit" class="btn green-haze">
+                            Submit </button>
                           <a href="#" class="btn default">
                             Cancel </a>
                         </div>

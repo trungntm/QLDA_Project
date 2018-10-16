@@ -21,6 +21,9 @@ import { ErrorInterceptor } from './helper/error-interceptor';
 import { IndexComponent } from './index/index.component';
 import { RegisterComponent } from './register/register.component';
 import { ProfileComponent } from './profile/profile.component';
+import { CommonModule } from '@angular/common';
+import { UploadFileComponent } from './upload-file/upload-file.component';
+import { UploadFileService } from './service/upload-file.service';
 
 @NgModule({
   declarations: [
@@ -33,16 +36,18 @@ import { ProfileComponent } from './profile/profile.component';
     MenuComponent,
     IndexComponent,
     RegisterComponent,
-    ProfileComponent
+    ProfileComponent,
+    UploadFileComponent
   ],
   imports: [
     BrowserModule,
+    CommonModule,
     FormsModule,
     AppRoutingModule,
     HttpClientModule,
-    angularJwt.JwtModule,
+    angularJwt.JwtModule
   ],
-  providers: [AuthGuard, AdminGuard, UserGuard, AuthService,
+  providers: [AuthGuard, AdminGuard, UserGuard, AuthService, UploadFileService,
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: HttpAuthInterceptor, multi: true },
   ],

@@ -7,7 +7,6 @@ import { AuthService } from '../service/auth.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Router } from '@angular/router';
 
-
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
@@ -47,7 +46,6 @@ export class RegisterComponent implements OnInit {
 
   constructor(private router: Router, private userService: UserService, private authService: AuthService) {
     this.jwtHelper = new JwtHelperService();
-
   }
 
   ngOnInit() {

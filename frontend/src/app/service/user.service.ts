@@ -18,7 +18,6 @@ export class UserService {
   }
 
   Register(userRegister: Register) {
-    console.log(userRegister);
     return this.http.post(this.url + `/api/v1/register`, userRegister, { observe: `response` });
   }
 }

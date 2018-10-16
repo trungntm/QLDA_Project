@@ -1,12 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Router, ActivatedRouteSnapshot } from '@angular/router';
 import { AuthService } from '../service/auth.service';
 import { Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { Person } from '../entity/person';
-
+import { PersonService } from '../service/person.service';
+import * as toastr from "../../assets/global/plugins/bootstrap-toastr/toastr.min.js";
+import { UploadFileComponent } from '../upload-file/upload-file.component';
 @Component({
-  selector: 'app-profile',
+  selector: 'profile',
   templateUrl: './profile.component.html',
   styleUrls: [
     '../../assets/global/plugins/font-awesome/css/font-awesome.min.css',
@@ -37,14 +39,16 @@ export class ProfileComponent implements OnInit {
   isAdminRole: boolean = false;
   isUserRole: boolean = false;
   error: string;
-  principal: Observable<Person> | Person;
-
-  constructor(private route: Router, private authService: AuthService) {
+  principal: Person;
+  selectedFile: File;
+  constructor(private authService: AuthService,
+    private personService: PersonService) {
     this.principal = new Person;
   }
 
   ngOnInit() {
     this.GetPrincipal();
+    this.CheckRoleAdmin();
   }
 
   IsAuthenticated(): Observable<boolean> | boolean {
@@ -76,5 +80,35 @@ export class ProfileComponent implements OnInit {
         err => {
           console.log(err);
         });
+  }
+  CheckRoleAdmin(): Observable<boolean> | boolean {
+    if (localStorage.getItem("ROLE_ADMIN")) {
+      return this.isAdminRole = true;
+    }
+    return this.isAdminRole = false;
+  }
+
+  editProfile() {
+    this.personService.UpdateProfile(this.principal)
+      .pipe(first())
+      .subscribe(
+        res => {
+          if (res.ok) {
+            console.log(res);
+            toastr.success("Cập nhật thông tin thành công!");
+          }
+        },
+        err => {
+          console.log(err);
+        }
+      )
+  }
+
+  onChangedImage(e) {
+    this.selectedFile = e.target.files[0];
+  }
+
+  uploadImage() {
+    this.personService.UploadAvatar(this.selectedFile);
   }
 }

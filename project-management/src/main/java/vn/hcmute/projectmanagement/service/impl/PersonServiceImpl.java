@@ -34,4 +34,21 @@ public class PersonServiceImpl implements PersonService {
         person.setUserCreated(person.getUser().getUsername());
         return personRepository.save(person);
     }
+
+    @Override
+    public Person updateProfile(Person person) {
+        Optional<Person> personOptional=personRepository.findById(person.getId());
+        personOptional.orElseThrow(()->new NotFoundException("Not Found Person. Please check again!"));
+        Person personUpdated=personOptional.get();
+        personUpdated.setFullName(person.getFullName());
+        personUpdated.setSex(person.getSex());
+        personUpdated.setAddress(person.getAddress());
+        personUpdated.setEmail(person.getEmail());
+        personUpdated.setDateUpdated(person.getDateOfBirth());
+        personUpdated.setPhone(person.getPhone());
+        personUpdated.setDateUpdated(new Date());
+        personUpdated.setUserUpdated(personUpdated.getUser().getUsername());
+        return personRepository.save(personUpdated);
+    }
+
 }
