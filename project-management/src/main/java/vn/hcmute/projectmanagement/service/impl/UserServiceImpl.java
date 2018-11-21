@@ -1,6 +1,10 @@
 package vn.hcmute.projectmanagement.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import vn.hcmute.projectmanagement.entity.Person;
@@ -41,11 +45,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> retrieveAllUsers() {
-        List<User> users=userRepository.findAll();
-        if(users.isEmpty())
-            throw new NotFoundException("user not found");
-        return users;
+    public Page<User> retrieveAllUsers(Pageable pageable) {
+        return  userRepository.findAll(pageable);
     }
 
     @Override
@@ -104,11 +105,14 @@ public class UserServiceImpl implements UserService {
         return userOptional.get();
     }
 
+
     @Override
-    public User retrieveUserByIdOrUsername(long id, String username){
-        Optional<User> userOptional=userRepository.findByIdOrUsername(id,username);
-        if(!userOptional.isPresent())
-            throw new NotFoundException("User not found. Could not update role for this user");
-        return userOptional.get();
+    public Page<User> retrieveByUsernamePagingAndSorting(Optional<String> username, Optional<Integer> page, Optional<Integer> size, Optional<String> sortBy) {
+        return userRepository.retrieveByUsernamePagingAndSorting(username.orElse(""),new PageRequest(page.orElse(0),size.orElse(10),Sort.Direction.ASC,sortBy.orElse("id")));
+    }
+
+    @Override
+    public Page<User> retrieveAllUserPagingAndSorting(Optional<Integer> page, Optional<Integer> size, Optional<String> sortBy) {
+        return userRepository.retrieveAllUsersPagingAndSorting(new PageRequest(page.orElse(0),size.orElse(10),Sort.Direction.ASC,sortBy.orElse("id")));
     }
 }

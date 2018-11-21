@@ -1,6 +1,11 @@
 package vn.hcmute.projectmanagement.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import vn.hcmute.projectmanagement.api.v1.data.DataReturnList;
 import vn.hcmute.projectmanagement.api.v1.data.DataReturnOne;
@@ -12,6 +17,7 @@ import vn.hcmute.projectmanagement.service.UserService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -29,43 +35,51 @@ public class AdminController {
         return "permit admin";
     }
 
-    // retrieve user by id // chua xong
-    @GetMapping("/users/search")
-    public DataReturnOne<UserDto> retrieveUserById(@RequestParam(required = false) long id,@RequestParam(required = false) String username){
-        DataReturnOne<UserDto> dataReturnOne=new DataReturnOne<>();
-        dataReturnOne.setSuccess("true");
-        dataReturnOne.setMessage("success");
-        dataReturnOne.setData(userMapper.userToUserDto(userService.retrieveUserByIdOrUsername(id,username)));
-        return dataReturnOne;
-    }
-
-
-//    @GetMapping("/users/{username}")
-//    public DataReturnOne<UserDto> retrieveUserByUsername(@PathVariable String username){
-//        DataReturnOne<UserDto> dataReturnOne=new DataReturnOne<>();
-//        dataReturnOne.setSuccess("true");
-//        dataReturnOne.setMessage("success");
-//        dataReturnOne.setData(userMapper.userToUserDto(userService.retrieveUserByUsername(username)));
-//        return dataReturnOne;
-//    }
     // retrieve all users
-    @GetMapping("/users")
-    public DataReturnList<UserDto> retrieveAllUsers(@RequestHeader("Authorization") String header){
-        DataReturnList<UserDto> dataReturnList=new DataReturnList<>();
-        List<UserDto> userDtos=userService.retrieveAllUsers()
-                                .stream()
-                                .map(userMapper::userToUserDto)
-                                .collect(Collectors.toList());
-        List<UserDto> users=new ArrayList<>();
-        if(userDtos.isEmpty()){
-            throw new NotFoundException("User not found!");
-        }
-        dataReturnList.setMessage("success !");
-        userDtos.forEach(user->users.add(user));
-        dataReturnList.setData(users);
-        System.out.println("response token : "+header);
-        return dataReturnList;
+//    @GetMapping("/users")
+//    public List<UserDto> retrieveAllUsers(Pageable pageable){
+//
+//        Page<User> resultPages=userService.retrieveAllUsers(pageable);
+////        DataReturnList<UserDto> dataReturnList=new DataReturnList<>();
+//        List<UserDto> userDtos;
+//        try{
+//            userDtos=resultPages.getContent()
+//                    .stream()
+//                    .map(userMapper::userToUserDto)
+//                    .collect(Collectors.toList());
+//            if(userDtos.isEmpty()) throw new NotFoundException("Not found user");
+////            List<UserDto> users=new ArrayList<>();
+////            dataReturnList.setMessage("success !");
+////            userDtos.forEach(user->users.add(user));
+////            dataReturnList.setData(users);
+//        }catch (NotFoundException e){
+//            return null;
+////            dataReturnList.setData(null);
+////            dataReturnList.setMessage(e.getMessage());
+////            dataReturnList.setSuccess("false");
+//        }
+//        return userDtos;
+//    }
+
+    @GetMapping("/users/search")
+    public List<UserDto> findByUsernamePagingAndSorting(@RequestParam("username") Optional<String> username,
+                                                        @RequestParam("page") Optional<Integer> page,
+                                                        @RequestParam("size") Optional<Integer> size,
+                                                        @RequestParam("sortBy") Optional<String> sortBy){
+        Page<User> userPage=userService.retrieveByUsernamePagingAndSorting(username,page,size,sortBy);
+        return userPage.getContent().stream().map(userMapper::userToUserDto)
+                .collect(Collectors.toList());
     }
+
+    @GetMapping("/users")
+    public List<UserDto> findAllUsserPagingAndSorting(  @RequestParam("page") Optional<Integer> page,
+                                                        @RequestParam("size") Optional<Integer> size,
+                                                        @RequestParam("sortBy") Optional<String> sortBy){
+        Page<User> userPage=userService.retrieveAllUserPagingAndSorting(page,size,sortBy);
+        return userPage.getContent().stream().map(userMapper::userToUserDto)
+                .collect(Collectors.toList());
+    }
+
     // update role for user
     @PutMapping("/users/role/{uid}/{rid}")
     public DataReturnOne<UserDto> updateUserRole(@PathVariable long uid, @PathVariable long rid){
