@@ -36,11 +36,14 @@ export class HeaderComponent implements OnInit {
   isUserRole: boolean = false;
   principal: Observable<Person> | Person;
 
-  constructor(private route: Router, private profileComponent: ProfileComponent) {
+  // constructor(private route: Router, private profileComponent: ProfileComponent) {
+
+  // }
+  constructor(private route: Router) {
 
   }
 
   ngOnInit() {
-    // this.GetPrincipal();
+    //this.profileComponent.GetPrincipal();
   }
 }

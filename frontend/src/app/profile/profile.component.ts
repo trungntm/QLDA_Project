@@ -1,14 +1,14 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, Input } from '@angular/core';
 import { Router, ActivatedRouteSnapshot } from '@angular/router';
 import { AuthService } from '../service/auth.service';
 import { Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { Person } from '../entity/person';
 import { PersonService } from '../service/person.service';
+import * as $ from "../../assets/global/plugins/jquery.min.js";
 import * as toastr from "../../assets/global/plugins/bootstrap-toastr/toastr.min.js";
-import { UploadFileComponent } from '../upload-file/upload-file.component';
 @Component({
-  selector: 'profile',
+  selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: [
     '../../assets/global/plugins/font-awesome/css/font-awesome.min.css',
@@ -39,7 +39,7 @@ export class ProfileComponent implements OnInit {
   isAdminRole: boolean = false;
   isUserRole: boolean = false;
   error: string;
-  principal: Person;
+  @Input() principal: Person;
   selectedFile: File;
   constructor(private authService: AuthService,
     private personService: PersonService) {
@@ -100,6 +100,7 @@ export class ProfileComponent implements OnInit {
         },
         err => {
           console.log(err);
+          toastr.error(err.status + " Cập nhật thông tin không thành công!");
         }
       )
   }

@@ -24,8 +24,11 @@ import { ProfileComponent } from './profile/profile.component';
 import { CommonModule } from '@angular/common';
 import { UploadFileComponent } from './upload-file/upload-file.component';
 import { UploadFileService } from './service/upload-file.service';
+import { CustomersDetailsComponent } from './customers-details/customers-details.component';
+import { CustomersListComponent } from './customers-list/customers-list.component';
 
 @NgModule({
+
   declarations: [
     AppComponent,
     DashboardComponent,
@@ -37,7 +40,9 @@ import { UploadFileService } from './service/upload-file.service';
     IndexComponent,
     RegisterComponent,
     ProfileComponent,
-    UploadFileComponent
+    UploadFileComponent,
+    CustomersDetailsComponent,
+    CustomersListComponent,
   ],
   imports: [
     BrowserModule,

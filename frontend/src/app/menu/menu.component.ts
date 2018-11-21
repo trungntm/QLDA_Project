@@ -26,7 +26,7 @@ import { Observable } from 'rxjs';
 export class MenuComponent implements OnInit {
 
   isRoleAdmin: Observable<boolean> | boolean;
-  constructor(private router: Router, private profileComponent: ProfileComponent) { }
+  constructor(private router: Router) { }
 
   ngOnInit() {
   }
